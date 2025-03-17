@@ -83,7 +83,7 @@ $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     </div>
     <div class="text-center mt-4">
-        <a href="../welcome.php" class="btn btn-primary" style="background-color: #00247E; color: white;">Continue Shopping</a>
+        <a href="../welcome.php" class="btn btn-primary" style="background-color: #00247E; color: white;">Return to Shopping</a>
     </div>
 </div>
 
