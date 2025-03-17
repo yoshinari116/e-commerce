@@ -94,19 +94,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <p class="card-text">Type: <?php echo htmlspecialchars($row['pt_type']); ?></p>
                             <p class="card-text text-primary fw-bold">Price: $<?php echo number_format($row['pt_price'], 2); ?></p>
 
-                            <form action="cart/add_to_cart.php" method="POST" class="d-grid mb-2">
+                            <form action="" method="POST" class="d-grid">
                                 <label class="form-label">Quantity</label>
                                 <input name="quantity" required type="number" min="1" class="form-control mb-2">
-                                <input type="hidden" name="product_id" value="<?php echo ($row['product_id']); ?>">
-                                <input type="hidden" name="user_id" value="<?php echo ($login_user['id']); ?>">
-                                <button type="submit" class="btn cart">Add to Cart</button>
-                            </form>
-
-                            <form action="order/create_order.php" method="POST" class="d-grid">
-                                <input name="quantity" required type="number" min="1" class="form-control mb-2" hidden value="1">
+                                
                                 <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
                                 <input type="hidden" name="user_id" value="<?php echo $login_user['id']; ?>">
-                                <button type="submit" class="btn order">Order Now</button>
+
+                                <button type="submit" formaction="cart/add_to_cart.php" class="btn cart mb-2">Add to Cart</button>
+                                <button type="submit" formaction="order/create_order.php" class="btn order">Order Now</button>
                             </form>
                         </div>
                     </div>

@@ -3,11 +3,11 @@ session_start();
 include('../database/db.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!empty($_POST['product_id']) && !empty($_POST['user_id'])) {
+    if (!empty($_POST['product_id']) && !empty($_POST['user_id']) && !empty($_POST['quantity'])) {
         $pt_id = $_POST['product_id'];
         $id = $_POST['user_id'];
         $quantity = $_POST['quantity'];
-        $order_date = date("Y-m-d"); 
+        $order_date = date("Y-m-d");
 
         try {
             $conn->beginTransaction();
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindParam(':order_date', $order_date);
             $stmt->execute();
 
-            // Remove item from cart
+            // Remove item from cart (if it exists)
             $delete_query = "DELETE FROM cart_tbl WHERE user_id = :user_id AND product_id = :product_id";
             $delete_stmt = $conn->prepare($delete_query);
             $delete_stmt->bindParam(':user_id', $id);
@@ -31,13 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $conn->commit();
 
-            echo "<script>alert('Order placed successfully!'); window.location.href='../welcome.php';</script>";
+            // Redirect back to welcome.php after successful order
+            header("Location: ../welcome.php?order_success=1");
+            exit;
         } catch (Exception $e) {
             $conn->rollBack();
-            echo "<script>alert('Error: " . $e->getMessage() . "'); window.history.back();</script>";
+            header("Location: ../welcome.php?order_error=" . urlencode($e->getMessage()));
+            exit;
         }
     } else {
-        echo "<script>alert('Invalid request!'); window.history.back();</script>";
+        header("Location: ../welcome.php?order_error=Invalid request");
+        exit;
     }
 }
 ?>
+

@@ -69,7 +69,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" class="text-center">No orders found.</td>
+                            <td colspan="5" class="text-center">_</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
