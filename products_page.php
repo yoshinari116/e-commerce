@@ -97,7 +97,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <!-- Product Table -->
-<h2 style="margin-top: 30px;">Added Products</h2>
+<h2 style="margin-top: 30px;">All Products</h2>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -117,14 +117,14 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <td><img style="height:30px" src="product/product_img/<?php echo htmlspecialchars($row['pt_img']); ?>" alt=""></td>
       <td>
         <!-- Edit Button -->
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editbtn<?php echo $row['pt_id']; ?>">Edit</button>
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editbtn<?php echo $row['product_id']; ?>">Edit</button>
         <!-- Delete Button -->
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletebtn<?php echo $row['pt_id']; ?>">Delete</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletebtn<?php echo $row['product_id']; ?>">Delete</button>
       </td>
     </tr>
 
     <!-- Edit Modal -->
-    <div class="modal fade" id="editbtn<?php echo $row['pt_id']; ?>" tabindex="-1" aria-labelledby="editModalLabel<?php echo $row['pt_id']; ?>" aria-hidden="true">
+    <div class="modal fade" id="editbtn<?php echo $row['product_id']; ?>" tabindex="-1" aria-labelledby="editModalLabel<?php echo $row['product_id']; ?>" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -133,7 +133,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
           </div>
           <div class="modal-body">
             <form action="product/edit_product.php" method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="product_id" value="<?php echo $row['pt_id']; ?>">
+              <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
 
               <label for="product_name">Product Name:</label>
               <input class="form-control" type="text" name="product_name" value="<?php echo htmlspecialchars($row['pt_name']); ?>" required>
@@ -161,7 +161,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- Delete Modal -->
-    <div class="modal fade" id="deletebtn<?php echo $row['pt_id']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?php echo $row['pt_id']; ?>" aria-hidden="true">
+    <div class="modal fade" id="deletebtn<?php echo $row['product_id']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?php echo $row['product_id']; ?>" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -169,11 +169,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete "<strong><?php echo $row['pt_name']; ?></strong>"?
+                    Delete Item? "<strong><?php echo $row['pt_name']; ?></strong>"?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="product/delete_product.php?id=<?php echo $row['pt_id']; ?>" class="btn btn-danger">Yes, Delete</a>
+                    <a href="product/delete_product.php?id=<?php echo $row['product_id']; ?>" class="btn btn-danger">Yes</a>
                 </div>
             </div>
         </div>

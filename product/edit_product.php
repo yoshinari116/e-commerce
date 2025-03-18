@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
         $target_file = $target_dir . basename($image);
         move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
 
-        $query = "UPDATE products_tbl SET pt_name=?, pt_type=?, pt_price=?, pt_img=? WHERE pt_id=?";
+        $query = "UPDATE products_tbl SET pt_name=?, pt_type=?, pt_price=?, pt_img=? WHERE product_id=?";
         $stmt = $conn->prepare($query);
         $stmt->execute([$name, $type, $price, $image, $id]);
     } else {
-        $query = "UPDATE products_tbl SET pt_name=?, pt_type=?, pt_price=? WHERE pt_id=?";
+        $query = "UPDATE products_tbl SET pt_name=?, pt_type=?, pt_price=? WHERE product_id=?";
         $stmt = $conn->prepare($query);
         $stmt->execute([$name, $type, $price, $id]);
     }
