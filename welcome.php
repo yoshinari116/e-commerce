@@ -65,7 +65,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         .btn.cart {
-          background-color:#3E65D0;
+          background-color: rgb(98, 31, 255);
           color: white;
         }
     </style>
@@ -77,7 +77,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="ms-auto">
                 <span class="me-3 text-white">Welcome: <?php echo $login_user['username']; ?></span>
                 <a href="order.php" class="btn btn-light">Orders</a>
-                <a href="cart/cart.php" class="btn" style="background-color: #3E65D0; color: white;">Cart (<?php echo $cart_count; ?>)</a>
+                <a href="cart/cart.php" class="btn" style="background-color:rgb(98, 31, 255); color: white;">Cart (<?php echo $cart_count; ?>)</a>
                 <a href="php/logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
@@ -92,7 +92,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <div class="card-body text-center">
                             <h5 class="card-title"><?php echo htmlspecialchars($row['pt_name']); ?></h5>
                             <p class="card-text">Type: <?php echo htmlspecialchars($row['pt_type']); ?></p>
-                            <p class="card-text text-primary fw-bold">Price: $<?php echo number_format($row['pt_price'], 2); ?></p>
+                            <p class="card-text text-primary fw-bold">Price: ₱<?php echo number_format($row['pt_price'], 2); ?></p>
 
                             <form action="" method="POST" class="d-grid">
                                 <label class="form-label">Quantity</label>

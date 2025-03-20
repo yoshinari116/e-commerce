@@ -63,7 +63,7 @@ $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <img src="../product/product_img/<?php echo htmlspecialchars($item['pt_img']); ?>" alt="Product Image" class="img-fluid" style="max-width: 100px;">
                             </td>
                             <td>
-                                <a href="cart/cart_remove.php?cart_id=<?php echo $item['cart_id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this item?');">Remove</a>
+                                <a href="../cart/cart_remove.php?cart_id=<?php echo $item['cart_id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to remove this item?');">Remove</a>
                                 
                                 <form action="../order/create_order.php" method="POST" style="display:inline;">
                                     <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
