@@ -4,33 +4,53 @@ ini_set('display_errors', 1);
 session_start();
 include('../database/db.php');
 
-
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     header('Location: ../index.php');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
-    $id = $_POST['product_id'];
-    $name = $_POST['product_name'];
-    $type = $_POST['product_type'];
-    $price = $_POST['product_price'];
+    $id = trim($_POST['product_id']);
+    $name = trim($_POST['product_name']);
+    $brand = trim($_POST['product_brand']);
+    $type = trim($_POST['product_type']);
+    $price = trim($_POST['product_price']);
+
+    $query = "SELECT pt_img FROM products_tbl WHERE product_id=?";
+    $stmt = $conn->prepare($query);
+    $stmt->execute([$id]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+    $oldImage = $product['pt_img'];
 
     if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
-        $image = $_FILES['image']['name'];
-        $target_dir = "../product/product_img/";
-        $target_file = $target_dir . basename($image);
-        move_uploaded_file($_FILES['image']['tmp_name'], $target_file);
+        $uploadDir = "../product/product_img/";
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
 
-        $query = "UPDATE products_tbl SET pt_name=?, pt_type=?, pt_price=?, pt_img=? WHERE product_id=?";
-        $stmt = $conn->prepare($query);
-        $stmt->execute([$name, $type, $price, $image, $id]);
+        $newImageName = $_FILES['image']['name'];
+        $uploadPath = $uploadDir . $newImageName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+            if (!empty($oldImage) && file_exists($uploadDir . $oldImage) && $oldImage !== $newImageName) {
+                unlink($uploadDir . $oldImage);
+            }
+
+            $query = "UPDATE products_tbl SET pt_name=?, pt_brand=?, pt_type=?, pt_price=?, pt_img=? WHERE product_id=?";
+            $stmt = $conn->prepare($query);
+            $stmt->execute([$name, $brand, $type, $price, $newImageName, $id]);
+        } else {
+            $_SESSION['errorMessage'] = "Image upload failed.";
+            header('Location: ../products_page.php');
+            exit;
+        }
     } else {
-        $query = "UPDATE products_tbl SET pt_name=?, pt_type=?, pt_price=? WHERE product_id=?";
+        $query = "UPDATE products_tbl SET pt_name=?, pt_brand=?, pt_type=?, pt_price=? WHERE product_id=?";
         $stmt = $conn->prepare($query);
-        $stmt->execute([$name, $type, $price, $id]);
+        $stmt->execute([$name, $brand, $type, $price, $id]);
     }
 
+    $_SESSION['successMessage'] = "Product updated successfully!";
     header('Location: ../products_page.php');
     exit;
 }

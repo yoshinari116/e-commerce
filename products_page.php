@@ -9,18 +9,13 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 } else {
-
     header('Location: index.php');
     exit;
 }
 
 $query = "SELECT * FROM products_tbl";
 $stmt = $conn->query($query);
- 
-
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
- 
- 
 ?>
 
 <!DOCTYPE html>
@@ -39,32 +34,28 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
       <a href="#">Dashboard</a>
       <a href="#">Users</a>
       <a href="#">Settings</a>
-      <a href="Admin_page.php" style="color:#e53935">Home</a>
+      <a href="Admin_page.php" style="color:#9400e3">Home</a>
     </div>
     <div class="nav-right">
-      <a href="php/logout.php" class="btn btn-danger">Logout</a>
+      <a href="php/logout.php" class="btn" style="background-color:#9400e3">Logout</a>
     </div>
 </div>
 
-<!-- Sidebar -->
 <div class="sidebar">
     <a href="admin_page.php">Home</a>
     <a href="#">Profile</a>
     <a href="#">Manage User</a>
     <a href="products_page.php">Products</a>
-    <a href="#">Analytics</a>
+    <a href="analytics.php">Analytics</a>
     <a href="admin_page_orders.php">View Orders</a>
 </div>
 
-<!-- Main Content -->
 <div class="main-content">
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addproduct">
+<button type="button" class="btn" style="background-color:#9400e3; color: white" data-bs-toggle="modal" data-bs-target="#addproduct">
   ADD NEW PRODUCT
 </button>
 
-<!-- Modal -->
 <div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="addProductLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -73,9 +64,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form action="product/create_products.php" method="POST" enctype="multipart/form-data">
+        <form action="product/create_product.php" method="POST" enctype="multipart/form-data">
           <label for="product_name">Product Name:</label>
           <input class="form-control" type="text" name="product_name" required>
+
+          <label for="product_brand">Product Brand:</label>
+          <input class="form-control" type="text" name="product_brand" required>
 
           <label for="product_type">Product Type:</label>
           <input class="form-control" type="text" name="product_type" required>
@@ -96,12 +90,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </div>
 
-<!-- Product Table -->
 <h2 style="margin-top: 30px;">All Products</h2>
 <table class="table table-bordered">
   <thead>
     <tr>
       <th>Product Name</th>
+      <th>Brand</th>
       <th>Product Type</th>
       <th>Price</th>
       <th>Image</th>
@@ -112,18 +106,16 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach ($products as $row): ?>
     <tr>
       <td><?php echo htmlspecialchars($row['pt_name']); ?></td>
+      <td><?php echo htmlspecialchars($row['pt_brand']); ?></td>
       <td><?php echo htmlspecialchars($row['pt_type']); ?></td>
       <td><?php echo htmlspecialchars($row['pt_price']); ?></td>
       <td><img style="height:30px" src="product/product_img/<?php echo htmlspecialchars($row['pt_img']); ?>" alt=""></td>
       <td>
-        <!-- Edit Button -->
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editbtn<?php echo $row['product_id']; ?>">Edit</button>
-        <!-- Delete Button -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editbtn<?php echo $row['product_id']; ?>">Edit</button>
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deletebtn<?php echo $row['product_id']; ?>">Delete</button>
       </td>
     </tr>
 
-    <!-- Edit Modal -->
     <div class="modal fade" id="editbtn<?php echo $row['product_id']; ?>" tabindex="-1" aria-labelledby="editModalLabel<?php echo $row['product_id']; ?>" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -137,6 +129,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
               <label for="product_name">Product Name:</label>
               <input class="form-control" type="text" name="product_name" value="<?php echo htmlspecialchars($row['pt_name']); ?>" required>
+
+              <label for="product_brand">Product Brand:</label>
+              <input class="form-control" type="text" name="product_brand" value="<?php echo htmlspecialchars($row['pt_brand']); ?>" required>
 
               <label for="product_type">Product Type:</label>
               <input class="form-control" type="text" name="product_type" value="<?php echo htmlspecialchars($row['pt_type']); ?>" required>
@@ -160,7 +155,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </div>
     </div>
 
-    <!-- Delete Modal -->
     <div class="modal fade" id="deletebtn<?php echo $row['product_id']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel<?php echo $row['product_id']; ?>" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

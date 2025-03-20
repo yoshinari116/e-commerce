@@ -14,17 +14,21 @@ if (isset($_SESSION['user'])) {
     exit;
 }
 
-// Fetch cart count from database
-$query = "SELECT COUNT(*) as cart_count FROM cart_tbl WHERE user_id = :user_id";
-$stmt = $conn->prepare($query);
-$stmt->bindParam(':user_id', $login_user['id']);
-$stmt->execute();
-$cart_count = $stmt->fetch(PDO::FETCH_ASSOC)['cart_count'];
+$cart_query = "SELECT COUNT(*) AS cart_count FROM cart_tbl WHERE user_id = :user_id";
+$cart_stmt = $conn->prepare($cart_query);
+$cart_stmt->bindParam(':user_id', $login_user['id']);
+$cart_stmt->execute();
+$cart_count = $cart_stmt->fetch(PDO::FETCH_ASSOC)['cart_count'] ?? 0;
 
-// Fetch products from database
-$query = "SELECT * FROM products_tbl";
-$stmt = $conn->query($query);
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$order_query = "SELECT COUNT(*) AS order_count FROM order_tbl WHERE id = :user_id";
+$order_stmt = $conn->prepare($order_query);
+$order_stmt->bindParam(':user_id', $login_user['id']);
+$order_stmt->execute();
+$order_count = $order_stmt->fetch(PDO::FETCH_ASSOC)['order_count'] ?? 0;
+
+$product_query = "SELECT * FROM products_tbl";
+$product_stmt = $conn->query($product_query);
+$products = $product_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +41,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="css/welcome.css">
     <style>
         .navbar {
-            background-color: #00247E;
+            background-color: #440170;
             font-weight: bold;
             font-size: 18px;    
         }
@@ -57,16 +61,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             object-fit: cover;
         }
         .btn.order {
-            background-color: #00247E;
+            background-color: #440170;
             color: white;
         }
         .btn.order:hover {
-            background-color: #001B5E;
+            background-color: #440170;
         }
-
         .btn.cart {
-          background-color: rgb(98, 31, 255);
-          color: white;
+            background-color: #7800b8;
+            color: white;
         }
     </style>
 </head>
@@ -76,8 +79,8 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <a class="navbar-brand" href="#">E-Commerce</a>
             <div class="ms-auto">
                 <span class="me-3 text-white">Welcome: <?php echo $login_user['username']; ?></span>
-                <a href="order.php" class="btn btn-light">Orders</a>
-                <a href="cart/cart.php" class="btn" style="background-color:rgb(98, 31, 255); color: white;">Cart (<?php echo $cart_count; ?>)</a>
+                <a href="order.php" class="btn" style="background-color: white; color: #440170;">Orders (<?php echo $order_count; ?>)</a>
+                <a href="cart/cart.php" class="btn" style="background-color: white; color: #440170;">Cart (<?php echo $cart_count; ?>)</a>
                 <a href="php/logout.php" class="btn btn-danger">Logout</a>
             </div>
         </div>
@@ -91,6 +94,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <img src="product/product_img/<?php echo htmlspecialchars($row['pt_img']); ?>" class="card-img-top product-image" alt="Product Image">
                         <div class="card-body text-center">
                             <h5 class="card-title"><?php echo htmlspecialchars($row['pt_name']); ?></h5>
+                            <p class="card-text">Brand: <?php echo htmlspecialchars($row['pt_brand']); ?></p>
                             <p class="card-text">Type: <?php echo htmlspecialchars($row['pt_type']); ?></p>
                             <p class="card-text text-primary fw-bold">Price: ₱<?php echo number_format($row['pt_price'], 2); ?></p>
 

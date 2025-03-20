@@ -25,7 +25,7 @@
     <form method="POST" action="php/login_auth.php">
         <input type="text" name="username" class="input-field" placeholder="Username" required autocomplete="off"><br>
         <input type="password" name="password" class="input-field" placeholder="Password" required autocomplete="off"><br>
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btn" style="background-color:  #7800b8 ; color: white;">Login</button>
     </form>
 
     <a href="registration.php">Registration</a>

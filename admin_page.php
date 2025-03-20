@@ -6,11 +6,9 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit;
 }
 
-// Check if the 'user' session variable is set
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
 } else {
-    // If the user session variable is not set, redirect to the login page
     header('Location: index.php');
     exit;
 }
@@ -33,10 +31,10 @@ if (isset($_SESSION['user'])) {
       <a href="#">Dashboard</a>
       <a href="#">Users</a>
       <a href="#">Settings</a>
-      <a href="Admin_page.php" style="color:#e53935">Home</a>
+      <a href="Admin_page.php" style="color:#9400e3">Home</a>
     </div>
     <div class="nav-right">
-      <a href="php/logout.php" class="btn btn-danger">Logout</a>
+      <a href="php/logout.php" class="btn" style="background-color:#9400e3">Logout</a>
     </div>
 </div>
 
@@ -46,7 +44,7 @@ if (isset($_SESSION['user'])) {
     <a href="#">Profile</a>
     <a href="#">Manage User</a>
     <a href="products_page.php">Products</a>
-    <a href="#">Analytics</a>
+    <a href="analytics.php">Analytics</a>
     <a href="admin_page_orders.php">View Orders</a>
   </div>
 

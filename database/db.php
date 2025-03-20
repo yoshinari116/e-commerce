@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost'; // Database host
-$dbname = 'ecommerce'; // Database name
-$username = 'root'; // Database username (usually root in local environments)
-$password = ''; // Database password (usually empty in local environments)
+$host = 'localhost';
+$dbname = 'ecommerce';
+$username = 'root';
+$password = '';
  
 try {
     // Create a PDO instance
@@ -11,4 +11,4 @@ try {
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
-?>
+?>  
