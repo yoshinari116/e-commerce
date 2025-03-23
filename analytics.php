@@ -26,13 +26,15 @@ $stmt = $conn->prepare("SELECT users.username, COUNT(*) AS count FROM order_tbl 
 $stmt->execute();
 $orders_per_user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$user_types_json = json_encode($user_types);
-$product_categories_json = json_encode($product_categories);
-$orders_per_user_json = json_encode($orders_per_user);
+$stmt = $conn->prepare("SELECT products_tbl.pt_brand, COUNT(*) AS count FROM order_tbl 
+                        JOIN products_tbl ON order_tbl.product_id = products_tbl.product_id 
+                        GROUP BY products_tbl.pt_brand");
+$stmt->execute();
+$orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,38 +43,75 @@ $orders_per_user_json = json_encode($orders_per_user);
     <link rel="stylesheet" href="css/analytics.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawCharts);
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            let userTypes = <?php echo $user_types_json; ?>;
-            let productCategories = <?php echo $product_categories_json; ?>;
-            let ordersPerUser = <?php echo $orders_per_user_json; ?>;
+      function drawCharts() {
+        drawUserTypesChart();
+        drawProductCategoriesChart();
+        drawOrdersPerUserChart();
+        drawOrdersByBrandChart();
+      }
 
-            let userTypesData = new google.visualization.DataTable();
-            userTypesData.addColumn('string', 'User Role');
-            userTypesData.addColumn('number', 'Count');
-            userTypes.forEach(row => userTypesData.addRow([row.role, parseInt(row.count)]));
+      function drawUserTypesChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['User Role', 'Count'],
+          <?php
+            foreach ($user_types as $row) {
+                echo "['".$row['role']."', ".$row['count']."],";
+            }
+          ?>
+        ]);
 
-            let userTypesChart = new google.visualization.PieChart(document.getElementById('userTypesChart'));
-            userTypesChart.draw(userTypesData, {title: 'User Role Distribution'});
+        var options = { title: 'User Role Distribution', is3D: true };
+        var chart = new google.visualization.PieChart(document.getElementById('userTypesChart'));
+        chart.draw(data, options);
+      }
 
-            let productCategoriesData = new google.visualization.DataTable();
-            productCategoriesData.addColumn('string', 'Category');
-            productCategoriesData.addColumn('number', 'Count');
-            productCategories.forEach(row => productCategoriesData.addRow([row.pt_type, parseInt(row.count)]));
+      function drawProductCategoriesChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Category', 'Count'],
+          <?php
+            foreach ($product_categories as $row) {
+                echo "['".$row['pt_type']."', ".$row['count']."],";
+            }
+          ?>
+        ]);
 
-            let productCategoriesChart = new google.visualization.PieChart(document.getElementById('productCategoriesChart'));
-            productCategoriesChart.draw(productCategoriesData, {title: 'Product Categories'});
+        var options = { title: 'Product Categories', is3D: true };
+        var chart = new google.visualization.PieChart(document.getElementById('productCategoriesChart'));
+        chart.draw(data, options);
+      }
 
-            let ordersPerUserData = new google.visualization.DataTable();
-            ordersPerUserData.addColumn('string', 'User');
-            ordersPerUserData.addColumn('number', 'Orders');
-            ordersPerUser.forEach(row => ordersPerUserData.addRow([row.username, parseInt(row.count)]));
+      function drawOrdersPerUserChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Orders'],
+          <?php
+            foreach ($orders_per_user as $row) {
+                echo "['".$row['username']."', ".$row['count']."],";
+            }
+          ?>
+        ]);
 
-            let ordersPerUserChart = new google.visualization.PieChart(document.getElementById('ordersPerUserChart'));
-            ordersPerUserChart.draw(ordersPerUserData, {title: 'Orders Per User'});
-        }
+        var options = { title: 'Orders Per User', is3D: true };
+        var chart = new google.visualization.PieChart(document.getElementById('ordersPerUserChart'));
+        chart.draw(data, options);
+      }
+
+      function drawOrdersByBrandChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Brand Name', 'Orders'],
+          <?php
+            foreach ($orders_by_brand as $row) {
+                echo "['".$row['pt_brand']."', ".$row['count']."],";
+            }
+          ?>
+        ]);
+
+        var options = { title: 'Orders by Brand', is3D: true };
+        var chart = new google.visualization.PieChart(document.getElementById('ordersByBrandChart'));
+        chart.draw(data, options);
+      }
     </script>
 </head>
 <body>
@@ -99,13 +138,44 @@ $orders_per_user_json = json_encode($orders_per_user);
     </div>
 
     <div class="main-content">
-        <h2>Analytics Dashboard</h2>
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-            <div id="userTypesChart" style="width: 400px; height: 300px;"></div>
-            <div id="productCategoriesChart" style="width: 400px; height: 300px;"></div>
-            <div id="ordersPerUserChart" style="width: 400px; height: 300px;"></div>
+    <h2>Analytics Charts</h2>
+    <div class="charts-container">
+        <div class="chart-box">
+            <div id="userTypesChart"></div>
+        </div>
+        <div class="chart-box">
+            <div id="productCategoriesChart"></div>
+        </div>
+        <div class="chart-box">
+            <div id="ordersByBrandChart"></div>
+        </div>
+        <div class="chart-box">
+            <div id="ordersPerUserChart"></div>
         </div>
     </div>
+</div>
+
+<style>
+    .charts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+    .chart-box {
+        width: 400px;
+        height: 300px;
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    #userTypesChart, #productCategoriesChart, #ordersByBrandChart, #ordersPerUserChart {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
 
 </body>
 </html>
