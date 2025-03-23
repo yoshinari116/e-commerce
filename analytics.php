@@ -64,9 +64,11 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ]);
 
         var options = { title: 'User Role Distribution', 
-                        is3D: true,  
+                        is3D: true, 
                         backgroundColor: { fill: 'none' },
-                        colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']   
+                        fontSize: 15  ,
+                        bold: true,
+                        colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
                       };
         var chart = new google.visualization.PieChart(document.getElementById('userTypesChart'));
         chart.draw(data, options);
@@ -83,8 +85,10 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ]);
 
         var options = { title: 'Product Categories', 
-                        is3D: true,  
+                        is3D: true, 
                         backgroundColor: { fill: 'none' },
+                        fontSize: 15  ,
+                        bold: true,
                         colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
                       };
         var chart = new google.visualization.PieChart(document.getElementById('productCategoriesChart'));
@@ -104,6 +108,8 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
         var options = { title: 'Orders Per User', 
                         is3D: true, 
                         backgroundColor: { fill: 'none' },
+                        fontSize: 15  ,
+                        bold: true,
                         colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
                       };
         var chart = new google.visualization.PieChart(document.getElementById('ordersPerUserChart'));
@@ -123,6 +129,8 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
         var options = { title: 'Orders by Brand', 
                         is3D: true, 
                         backgroundColor: { fill: 'none' },
+                        fontSize: 15  ,
+                        bold: true,
                         colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
                       };
         var chart = new google.visualization.PieChart(document.getElementById('ordersByBrandChart'));
@@ -156,7 +164,7 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
     <h1>Analytics Charts</h1>
     <div class="row">
-        <div class="col-md-6 offset-md-1"> <!-- Added offset-md-1 -->
+        <div class="col-md-5 offset-md-1">
             <div id="userTypesChart" style="width: 100%; height: 300px;"></div>
         </div>
         <div class="col-md-5">
@@ -164,7 +172,7 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 offset-md-1">
+        <div class="col-md-5 offset-md-1">
             <div id="ordersPerUserChart" style="width: 100%; height: 300px;"></div>
         </div>
         <div class="col-md-5">
