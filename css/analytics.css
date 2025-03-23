@@ -64,10 +64,13 @@
   .sidebar a:hover {
     background-color: #575757;
   }
-  /* Main Content */
+  
   .main-content {
-    margin-top: 60px; /* To avoid overlap with navbar */
-    margin-left: 210px; /* To avoid the sidebar */
+    margin-top: 60px;
+    margin-left: 210px;
     padding: 20px;
   }
+  .container {
+    margin-left: 20px;
+}
   

@@ -153,22 +153,26 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="admin_page_orders.php">View Orders</a>
     </div>
 
-    <div class="main-content">
-    <h2>Analytics Charts</h2>
-    <div class="charts-container">
-        <div class="chart-box">
-            <div id="userTypesChart"></div>
+    <div class="container">
+    <h1>Analytics Charts</h1>
+    <div class="row">
+        <div class="col-md-6 offset-md-1"> <!-- Added offset-md-1 -->
+            <div id="userTypesChart" style="width: 100%; height: 300px;"></div>
         </div>
-        <div class="chart-box">
-            <div id="productCategoriesChart"></div>
-        </div>
-        <div class="chart-box">
-            <div id="ordersByBrandChart"></div>
-        </div>
-        <div class="chart-box">
-            <div id="ordersPerUserChart"></div>
+        <div class="col-md-5">
+            <div id="productCategoriesChart" style="width: 100%; height: 300px;"></div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-1">
+            <div id="ordersPerUserChart" style="width: 100%; height: 300px;"></div>
+        </div>
+        <div class="col-md-5">
+            <div id="ordersByBrandChart" style="width: 100%; height: 300px;"></div>
+        </div>
+    </div>
+</div>
+
 </div>
 
 <style>
