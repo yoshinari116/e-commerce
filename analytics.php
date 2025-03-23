@@ -63,7 +63,11 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
           ?>
         ]);
 
-        var options = { title: 'User Role Distribution', is3D: true };
+        var options = { title: 'User Role Distribution', 
+                        is3D: true,  
+                        backgroundColor: { fill: 'none' },
+                        colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']   
+                      };
         var chart = new google.visualization.PieChart(document.getElementById('userTypesChart'));
         chart.draw(data, options);
       }
@@ -78,7 +82,11 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
           ?>
         ]);
 
-        var options = { title: 'Product Categories', is3D: true };
+        var options = { title: 'Product Categories', 
+                        is3D: true,  
+                        backgroundColor: { fill: 'none' },
+                        colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
+                      };
         var chart = new google.visualization.PieChart(document.getElementById('productCategoriesChart'));
         chart.draw(data, options);
       }
@@ -93,7 +101,11 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
           ?>
         ]);
 
-        var options = { title: 'Orders Per User', is3D: true };
+        var options = { title: 'Orders Per User', 
+                        is3D: true, 
+                        backgroundColor: { fill: 'none' },
+                        colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
+                      };
         var chart = new google.visualization.PieChart(document.getElementById('ordersPerUserChart'));
         chart.draw(data, options);
       }
@@ -108,7 +120,11 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
           ?>
         ]);
 
-        var options = { title: 'Orders by Brand', is3D: true };
+        var options = { title: 'Orders by Brand', 
+                        is3D: true, 
+                        backgroundColor: { fill: 'none' },
+                        colors: ['#9400E3', '#6A00BF', '#450099', '#003D99', '#005FAD', '#2E2E5E', '#50505A', '#A0A0A0']
+                      };
         var chart = new google.visualization.PieChart(document.getElementById('ordersByBrandChart'));
         chart.draw(data, options);
       }
@@ -165,10 +181,10 @@ $orders_by_brand = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .chart-box {
         width: 400px;
         height: 300px;
-        background: white;
+        /* background: transparent; */
         padding: 10px;
         border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
     }
     #userTypesChart, #productCategoriesChart, #ordersByBrandChart, #ordersPerUserChart {
         width: 100%;
