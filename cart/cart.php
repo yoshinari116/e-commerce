@@ -20,7 +20,6 @@ $stmt->bindParam(':user_id', $user_id);
 $stmt->execute();
 $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch cart count
 $cart_count_query = "SELECT COUNT(*) AS count FROM cart_tbl WHERE user_id = :user_id";
 $cart_count_stmt = $conn->prepare($cart_count_query);
 $cart_count_stmt->bindParam(':user_id', $user_id);
@@ -28,7 +27,6 @@ $cart_count_stmt->execute();
 $cart_count_result = $cart_count_stmt->fetch(PDO::FETCH_ASSOC);
 $cart_count = $cart_count_result['count'] ?? 0;
 
-// Fetch order count
 $order_count_query = "SELECT COUNT(*) AS count FROM order_tbl WHERE id = :user_id";
 $order_count_stmt = $conn->prepare($order_count_query);
 $order_count_stmt->bindParam(':user_id', $user_id);
